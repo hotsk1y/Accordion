@@ -1,61 +1,100 @@
-const title = document.querySelectorAll('.title')
-const btn = document.querySelector('#btn')
+function secondInterface() {
+  for (let i = 0; i < this.title.length; i++) {
+    this.title[i].removeEventListener('click', this.bindedFirstInt)
+  }
+
+  for (let i = 0; i < this.title.length; i++) {
+    this.title[i].addEventListener('click', this.bindedSecondInt)
+  }
+}
+
+function firstInterface(titles) {
+  for (let i = 0; i < this.title.length; i++) {
+    this.title[i].removeEventListener('click', this.bindedSecondInt)
+  }
+
+  for (let i = 0; i < this.title.length; i++) {
+    this.title[i].addEventListener('click', this.bindedFirstInt)
+  }
+}
+
+
 
 function addFirstItems(event) {
   const descrItem = event.target.parentElement
   descrItem.classList.toggle('active')
 }
 
-const firstInterface = () => {
-  for (let i = 0; i < title.length; i++) {
-    title[i].removeEventListener('click', addSecondItems)
-  }
 
-  for (let i = 0; i < title.length; i++) {
-    title[i].addEventListener('click', addFirstItems)
-  }
-}
 
 function addSecondItems(event) {
   const descrItem = event.target.parentElement
-  descrItem.classList.toggle('active')
-  for (let j = 0; j < title.length; j++) {
-    if (title[j].parentElement.classList.contains('active')) {
-      title[j].parentElement.classList.remove('active')
+
+  for (let j = 0; j < this.title.length; j++) {
+    if (this.title[j].parentElement.classList.contains('active')) {
+      this.title[j].parentElement.classList.remove('active')
     }
   }
   descrItem.classList.toggle('active')
 }
 
-const secondInterface = () => {
-  for (let i = 0; i < title.length; i++) {
-    title[i].removeEventListener('click', addFirstItems)
-  }
 
-  for (let i = 0; i < title.length; i++) {
-    title[i].addEventListener('click', addSecondItems)
-  }
-}
-
-const startInterface = () => {
-  if (btn.value === 'first') {
-    firstInterface()
+function startInterface() {
+  if (this.btn.value === 'first') {
+    this.firstint()
   } else {
-    secondInterface()
+    this.secondint()
   }
 }
 
-const changeInterface = () => {
-  btn.addEventListener('click', () => {
-    if (btn.value === 'second') {
-      btn.value = 'first'
+
+
+function changeInterface() {
+  this.btn.addEventListener('click', () => {
+    if (this.btn.value === 'second') {
+      this.btn.value = 'first'
+      this.btn.innerHTML = 'Включить второй интерфейс'
     } else {
-      btn.value = 'second'
+      this.btn.value = 'second'
+      this.btn.innerHTML = 'Включить первый интерфейс'
     }
-    console.log(btn.value)
-    startInterface()
+    this.start()
   })
 }
 
-startInterface()
-changeInterface()
+function addButtons(acctordionId) {
+  btn = document.createElement('button');
+  btn.setAttribute("value", "first");
+  btn.innerHTML = 'Включить второй интерфейс'
+
+  const accordion = document.getElementById(acctordionId)
+
+  accordion.prepend(btn)
+}
+
+function changes() {
+
+}
+
+
+class Accordion {
+  constructor(id) {
+    this.addButtons = addButtons(id)
+
+    this.title = document.querySelectorAll(`#${id} > .item > .title`)
+    this.btn = document.querySelector('#' + id + ' > button')
+    this.start = startInterface
+    this.change = changeInterface
+    this.firstint = firstInterface
+    this.secondint = secondInterface
+    this.bindedSecondInt = addSecondItems.bind(this)
+    this.bindedFirstInt = addFirstItems.bind(this)
+    this.start()
+    this.change()    
+  }
+}
+
+acc1 = new Accordion('acc1')
+acc2 = new Accordion('acc2')
+acc2 = new Accordion('acc3')
+
